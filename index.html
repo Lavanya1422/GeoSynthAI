@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GeoSynthAI - Home</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Google Map and Search Box Styles (if not in style.css) */
+    #map {
+      height: 400px;
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+    }
+
+    #search-box {
+      width: 100%;
+      max-width: 400px;
+      margin: 20px auto;
+      display: block;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="GeoSynthAI_logo.jpeg" alt="GeoSynthAI Logo" class="logo">
+
+    <div class="header-text">
+      <h1>GeoSynthAI 🛰️🗺️📈</h1>
+      <p class="subtitle">AI-Driven Detection of Glacial Lakes, Roads & Drainage</p>
+
+      <div class="welcome-block">
+        <p class="welcome-main">Welcome to GeoSynthAI</p>
+        <p class="welcome-sub">This project uses AI and satellite data for automated geospatial feature detection.</p>
+      </div>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="project.html">Project</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Interactive Map</h2>
+    <input id="search-box" type="text" placeholder="Search a location...">
+    <div id="map"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 GeoSynthAI</p>
+  </footer>
+
+  <!-- Google Maps API with your key -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKbVqzhvctOFBh2DBqXe8hzoETUttcdCQ&callback=initMap&libraries=places" async defer></script>
+
+  <script>
+    let map;
+    let marker;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 28.6139, lng: 77.2090 }, // New Delhi
+        zoom: 6
+      });
+
+      const input = document.getElementById("search-box");
+      const searchBox = new google.maps.places.SearchBox(input);
+
+      searchBox.addListener("places_changed", () => {
+        const places = searchBox.getPlaces();
+        if (places.length === 0) return;
+
+        const place = places[0];
+        const location = place.geometry.location;
+
+        map.setCenter(location);
+        map.setZoom(10);
+
+        if (marker) marker.setMap(null);
+        marker = new google.maps.Marker({
+          map,
+          position: location
+        });
+      });
+    }
+  </script>
+</body>
+</html>
